@@ -100,14 +100,20 @@ addEventListener('hashchange',fromFragment);fromFragment();})();
     }
   }
 
-  function toggle(index) {
-    selected = selected === index ? null : index;
-    paint();
+  // Choosing a rank hides text above the clock lanes, so the page below it shifts. Scroll by the shift so the tapped control stays under the finger (instant: the page scrolls smoothly otherwise).
+  function inPlace(control, change) {
+    const before = control.getBoundingClientRect().top;
+    change();
+    const shift = control.getBoundingClientRect().top - before;
+    if (shift) window.scrollBy({top: shift, behavior: 'instant'});
+  }
+  function toggle(control, index) {
+    inPlace(control, () => { selected = selected === index ? null : index; paint(); });
   }
   for (const {chips, lanes, clear} of layouts) {
-    chips.forEach((button, index) => button.addEventListener('click', () => toggle(index)));
-    for (const lane of lanes) lane.addEventListener('click', () => toggle(Number(lane.dataset.i)));
-    if (clear) clear.addEventListener('click', () => { selected = null; paint(); });
+    chips.forEach((button, index) => button.addEventListener('click', () => toggle(button, index)));
+    for (const lane of lanes) lane.addEventListener('click', () => toggle(lane, Number(lane.dataset.i)));
+    if (clear) clear.addEventListener('click', () => inPlace(clear, () => { selected = null; paint(); }));
   }
   function updateGroup() {
     const tooFew = Number(layouts[0].section.dataset['min' + page.dataset.g]) < 100;
@@ -143,7 +149,25 @@ ph.classList.add('pjs');
 function clampAxes(){ph.querySelectorAll('.axl').forEach(function(a){var p=a.getBoundingClientRect();if(!p.width)return;
  a.querySelectorAll(':scope > span').forEach(function(sp){sp.style.marginLeft='';var r=sp.getBoundingClientRect();
   if(r.left<p.left-.5)sp.style.marginLeft=(p.left-r.left)+'px';else if(r.right>p.right+.5)sp.style.marginLeft=(p.right-r.right)+'px'})})}
-clampAxes();addEventListener('resize',clampAxes);addEventListener('load',clampAxes);
+/* Labels never touch: where an axis is too narrow for all its labels every second one is left out (its tick stays), and a sunrise or sunset label that would touch the one before drops to a second row. */
+function touching(boxes){for(var k=1;k<boxes.length;k++)if(boxes[k-1].right+6>boxes[k].left)return true;return false}
+function thinAxes(){ph.querySelectorAll('.axl,.climb-ticks').forEach(function(a){
+ var spans=Array.from(a.querySelectorAll(':scope > span')),step=1;
+ spans.forEach(function(sp){sp.style.visibility=''});
+ if(!a.getBoundingClientRect().width)return;
+ function shown(){return spans.filter(function(sp){return sp.style.visibility!=='hidden'}).map(function(sp){return sp.getBoundingClientRect()})}
+ while(step<spans.length&&touching(shown())){step++;spans.forEach(function(sp,i){sp.style.visibility=i%step?'hidden':''})}})}
+function stackSun(){ph.querySelectorAll('.solar-labels').forEach(function(row){
+ var spans=Array.from(row.querySelectorAll(':scope > span')),end=[-1e9,-1e9],two=false;
+ spans.forEach(function(sp){sp.classList.remove('low')});row.classList.remove('two');
+ if(!row.getBoundingClientRect().width)return;
+ spans.forEach(function(sp){var r=sp.getBoundingClientRect(),line=r.left<end[0]+8?1:0;
+  if(line&&r.left<end[1]+8)line=0;
+  if(line){sp.classList.add('low');two=true}
+  end[line]=r.right});
+ row.classList.toggle('two',two)})}
+function fitLabels(){clampAxes();thinAxes();stackSun()}
+fitLabels();addEventListener('resize',fitLabels);addEventListener('load',fitLabels);
 var compact=matchMedia('(width < 1240px)'),index=ph.querySelectorAll('.pidx a');
 var parts=Array.from(index,function(a){return document.getElementById(a.getAttribute('href').slice(1))});
 function showFragment(){
