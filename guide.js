@@ -189,6 +189,7 @@ var clockObserver=new ResizeObserver(function(entries){
    var bounds=tick.getBoundingClientRect();
    var crowded=midnights.some(function(mid){return bounds.left<mid.right+6 && mid.left<bounds.right+6});
    tick.style.visibility=crowded?'hidden':'';
+   tick.nextElementSibling.style.visibility=crowded?'hidden':'';
   });
  });
 });
