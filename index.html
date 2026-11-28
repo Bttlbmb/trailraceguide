@@ -27,17 +27,22 @@ a.site-wordmark:hover { text-decoration: underline; }
 .skip-link:focus { left: 8px; top: 8px; }
 .site-bar a:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
 .site-bar {position:relative;z-index:5}
+.site-wordmark {flex-shrink:0}
+.course-nav {flex:1;min-width:0;position:relative;display:flex;justify-content:flex-end}
 .course-inline,.course-list {display:flex;align-items:center;gap:6px}
 .course-nav span {font-size:13px;font-weight:600;margin-right:5px}
 /* courses without a guide yet are plain text; only a real link keeps its box */
-.course-inline {gap:14px}
-.course-inline > span {margin-right:2px}
-.course-inline > span::after {content:":"}
+.course-inline {width:max-content;max-width:100%;flex-wrap:wrap;align-items:flex-start;gap:7px 14px;padding-block:7px}
+/* Keep the wrapped links measurable at the available width while the dropdown is shown. */
+.course-nav:not(.courses-fit) .course-inline {
+  position:absolute;inset:0 0 auto auto;visibility:hidden;overflow:clip
+}
 .course-nav :is(a,button,summary) {font:600 13px/1.2 'Avenir Next','Helvetica Neue',sans-serif;color:#245e45;background:#f7faf8;border:1px solid #6b8a7b;
   border-radius:6px;padding:7px 10px;white-space:nowrap;text-decoration:none}
 .course-nav em.no-guide {font-style:normal;font-size:13px;color:var(--page-muted)}
 .course-inline > span.no-guide-label {margin-left:10px;font-weight:500;color:var(--page-muted)}
-.course-nav details {display:none;position:relative}
+.course-nav details {position:relative}
+.course-nav.courses-fit details {display:none}
 .course-nav summary {display:flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;list-style:none}
 .course-nav summary::-webkit-details-marker {display:none}
 .course-nav summary:after {content:'';width:6px;height:6px;border:solid currentColor;border-width:0 1.5px 1.5px 0;transform:translateY(-2px) rotate(45deg)}
@@ -45,10 +50,14 @@ a.site-wordmark:hover { text-decoration: underline; }
 .course-list {position:absolute;top:calc(100% + 4px);right:0;width:max-content;max-width:min(270px,88vw);flex-wrap:wrap;
   padding:12px;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 3px 9px #16323f15}
 .course-list span {width:100%}
-.course-list a {display:inline-flex;min-height:44px;align-items:center}
+.course-list a {display:inline-flex;min-height:44px;align-items:center;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+@media (width > 1000px) {
+  .site-bar-inner:has(.courses-fit) .site-wordmark {align-self:flex-start;margin-block-start:7px;min-height:32px}
+}
 @media (max-width:1000px) {
+  .course-nav {flex:0 0 auto;margin-inline-start:auto}
   .course-inline {display:none}
-  .course-nav details {display:block}
+  .course-nav.courses-fit details {display:block}
 }
 @media (width < 1240px) {
   .page-title { font-size:27px; }

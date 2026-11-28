@@ -1,4 +1,24 @@
 
+(() => {
+  const nav = document.querySelector('.course-nav');
+  if (!nav) return;
+  const links = nav.querySelector('.course-inline');
+  const menu = nav.querySelector('details');
+
+  function fitCourses() {
+    const rows = new Set(Array.from(links.children, item => item.offsetTop));
+    const width = links.clientWidth;
+    const fits = width > 0 && rows.size <= 2 && links.scrollWidth <= width;
+    nav.classList.toggle('courses-fit', fits);
+    if (fits) menu.open = false;
+  }
+
+  fitCourses();
+  const observer = new ResizeObserver(fitCourses);
+  observer.observe(nav);
+  observer.observe(links);
+})();
+
 (function(){
 const bands=document.getElementById('race-bands'),frame=bands.parentElement;
 function resize(){

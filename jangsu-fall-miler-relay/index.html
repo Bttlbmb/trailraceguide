@@ -27,17 +27,22 @@ a.site-wordmark:hover { text-decoration: underline; }
 .skip-link:focus { left: 8px; top: 8px; }
 .site-bar a:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; }
 .site-bar {position:relative;z-index:5}
+.site-wordmark {flex-shrink:0}
+.course-nav {flex:1;min-width:0;position:relative;display:flex;justify-content:flex-end}
 .course-inline,.course-list {display:flex;align-items:center;gap:6px}
 .course-nav span {font-size:13px;font-weight:600;margin-right:5px}
 /* courses without a guide yet are plain text; only a real link keeps its box */
-.course-inline {gap:14px}
-.course-inline > span {margin-right:2px}
-.course-inline > span::after {content:":"}
+.course-inline {width:max-content;max-width:100%;flex-wrap:wrap;align-items:flex-start;gap:7px 14px;padding-block:7px}
+/* Keep the wrapped links measurable at the available width while the dropdown is shown. */
+.course-nav:not(.courses-fit) .course-inline {
+  position:absolute;inset:0 0 auto auto;visibility:hidden;overflow:clip
+}
 .course-nav :is(a,button,summary) {font:600 13px/1.2 'Avenir Next','Helvetica Neue',sans-serif;color:#245e45;background:#f7faf8;border:1px solid #6b8a7b;
   border-radius:6px;padding:7px 10px;white-space:nowrap;text-decoration:none}
 .course-nav em.no-guide {font-style:normal;font-size:13px;color:var(--page-muted)}
 .course-inline > span.no-guide-label {margin-left:10px;font-weight:500;color:var(--page-muted)}
-.course-nav details {display:none;position:relative}
+.course-nav details {position:relative}
+.course-nav.courses-fit details {display:none}
 .course-nav summary {display:flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;list-style:none}
 .course-nav summary::-webkit-details-marker {display:none}
 .course-nav summary:after {content:'';width:6px;height:6px;border:solid currentColor;border-width:0 1.5px 1.5px 0;transform:translateY(-2px) rotate(45deg)}
@@ -45,10 +50,14 @@ a.site-wordmark:hover { text-decoration: underline; }
 .course-list {position:absolute;top:calc(100% + 4px);right:0;width:max-content;max-width:min(270px,88vw);flex-wrap:wrap;
   padding:12px;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 3px 9px #16323f15}
 .course-list span {width:100%}
-.course-list a {display:inline-flex;min-height:44px;align-items:center}
+.course-list a {display:inline-flex;min-height:44px;align-items:center;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+@media (width > 1000px) {
+  .site-bar-inner:has(.courses-fit) .site-wordmark {align-self:flex-start;margin-block-start:7px;min-height:32px}
+}
 @media (max-width:1000px) {
+  .course-nav {flex:0 0 auto;margin-inline-start:auto}
   .course-inline {display:none}
-  .course-nav details {display:block}
+  .course-nav.courses-fit details {display:block}
 }
 @media (width < 1240px) {
   .page-title { font-size:27px; }
@@ -71,4 +80,24 @@ body { background: var(--page-surround); }
 .relay-table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
 .relay-table th, .relay-table td { text-align: left; padding: .48em .6em; border-bottom: 1px solid #afc7bc; }
 .relay-table :is(th, td):last-child { text-align: right; white-space: nowrap; }
-</style></head><body><a class="skip-link" href="#fit">Skip to content</a><header class="site-bar"><div class="site-bar-inner page-wrap"><a class="site-wordmark" href="../"><svg class="mk" aria-hidden="true" focusable="false" viewBox="0 0 64 64"><defs><clipPath id="r"><rect width="64" height="64" rx="14"/></clipPath></defs><rect width="64" height="64" rx="14" fill="#e3f0f8"/><g clip-path="url(#r)"><path d="M0,26 C10,18 18,22 26,16 S44,14 52,22 S60,20 64,22 L64,64 L0,64 Z" fill="#d3e6f2"/><path d="M0,26 C10,18 18,22 26,16 S44,14 52,22 S60,20 64,22" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3"/><path d="M0,34 C12,26 22,32 32,24 S50,26 64,30 L64,64 L0,64 Z" fill="#b9dcd8"/><path d="M0,34 C12,26 22,32 32,24 S50,26 64,30" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3"/><path d="M0,42 C10,38 22,42 34,34 S54,38 64,40 L64,64 L0,64 Z" fill="#9ccfbb"/><path d="M0,42 C10,38 22,42 34,34 S54,38 64,40" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3"/><path d="M0,50 C14,46 26,52 38,46 S54,48 64,50 L64,64 L0,64 Z" fill="#79bd9b"/><path d="M0,50 C14,46 26,52 38,46 S54,48 64,50" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3"/></g><path d="M6,46 C16,43 21,31 30,32 S42,40 48,27" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/><path d="M6,46 C16,43 21,31 30,32 S42,40 48,27" fill="none" stroke="#16323f" stroke-width="4.2" stroke-linecap="round"/><circle cx="51" cy="21" r="5.2" fill="#fff" stroke="#16323f" stroke-width="3.6"/></svg><span>Trail Race Guide</span></a><nav class="course-nav" aria-label="Other Jangsu Trail Race Fall courses"><div class="course-inline"><span>Other Jangsu Trail Race Fall courses</span><a href="../jangsu-fall-miler/">JTR Miler</a><a href="../jangsu-fall-20/">JTR 20</a><a href="../jangsu-fall-38p/">JTR 38P</a><a href="../jangsu-fall-40j/">JTR 40J</a><a href="../jangsu-fall-100/">JTR 100</a></div><details><summary>Other courses</summary><div class="course-list"><span>Other Jangsu Trail Race Fall courses</span><a href="../jangsu-fall-miler/">JTR Miler</a><a href="../jangsu-fall-20/">JTR 20</a><a href="../jangsu-fall-38p/">JTR 38P</a><a href="../jangsu-fall-40j/">JTR 40J</a><a href="../jangsu-fall-100/">JTR 100</a></div></details></nav></div></header><main id="fit" class="page-wrap companion"><h1 class="page-title">Jangsu Fall Miler Relay</h1><p>168.6 km · 10,760 m of climb · Jangsu Stadium · <time datetime="2026-09-18T14:00:00+09:00">18 September 2026 at 14:00 local time</time></p><p>Four runners share the Jangsu Miler course, with seven designated exchange points and a total time limit of 46 hours 30 minutes.</p><p>Teams follow the same route as the solo race. <a href="../jangsu-fall-miler/">See the Miler map and elevation profile</a>.</p><h2>Exchange points</h2><p>Teams can change runners only at these checkpoints. Each runner must complete at least one official leg.</p><table class="relay-table"><thead><tr><th scope="col">Point</th><th scope="col">Location</th><th scope="col">Distance</th></tr></thead><tbody><tr><td>RX 1</td><td>Subun Village</td><td>26.1 km</td></tr><tr><td>RX 2</td><td>Donghwa Branch School</td><td>44.8 km</td></tr><tr><td>RX 3</td><td>Jangsu Mountain Tourism Center</td><td>69.6 km</td></tr><tr><td>RX 4</td><td>Yuksimnyeong Rest Area</td><td>81.8 km</td></tr><tr><td>RX 5</td><td>To-okdong Valley</td><td>97.3 km</td></tr><tr><td>RX 6</td><td>Forest Leisure Sports Center</td><td>130.2 km</td></tr><tr><td>RX 7</td><td>Jangsu Mountain Tourism Center</td><td>148.2 km</td></tr></tbody></table><h2>2026 results</h2><p>The organiser ranked all four-person teams together. <a href="https://utmb.world/utmb-index/races/65412.jangsutrailracefallwiththenorthfacejtrmilerrelay.2026">View the relay results</a>.</p><p><a href="https://rocknrun.kr/JTRMiler">Organiser’s relay rules and cutoffs</a> · <a href="../">Race calendar</a></p></main></body></html>
+</style></head><body><a class="skip-link" href="#fit">Skip to content</a><header class="site-bar"><div class="site-bar-inner page-wrap"><a class="site-wordmark" href="../"><svg class="mk" aria-hidden="true" focusable="false" viewBox="0 0 64 64"><defs><clipPath id="r"><rect width="64" height="64" rx="14"/></clipPath></defs><rect width="64" height="64" rx="14" fill="#e3f0f8"/><g clip-path="url(#r)"><path d="M0,26 C10,18 18,22 26,16 S44,14 52,22 S60,20 64,22 L64,64 L0,64 Z" fill="#d3e6f2"/><path d="M0,26 C10,18 18,22 26,16 S44,14 52,22 S60,20 64,22" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3"/><path d="M0,34 C12,26 22,32 32,24 S50,26 64,30 L64,64 L0,64 Z" fill="#b9dcd8"/><path d="M0,34 C12,26 22,32 32,24 S50,26 64,30" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3"/><path d="M0,42 C10,38 22,42 34,34 S54,38 64,40 L64,64 L0,64 Z" fill="#9ccfbb"/><path d="M0,42 C10,38 22,42 34,34 S54,38 64,40" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3"/><path d="M0,50 C14,46 26,52 38,46 S54,48 64,50 L64,64 L0,64 Z" fill="#79bd9b"/><path d="M0,50 C14,46 26,52 38,46 S54,48 64,50" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3"/></g><path d="M6,46 C16,43 21,31 30,32 S42,40 48,27" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/><path d="M6,46 C16,43 21,31 30,32 S42,40 48,27" fill="none" stroke="#16323f" stroke-width="4.2" stroke-linecap="round"/><circle cx="51" cy="21" r="5.2" fill="#fff" stroke="#16323f" stroke-width="3.6"/></svg><span>Trail Race Guide</span></a><nav class="course-nav" aria-label="Other Jangsu Trail Race Fall courses"><div class="course-inline"><a href="../jangsu-fall-miler/">JTR Miler</a><a href="../jangsu-fall-20/">JTR 20</a><a href="../jangsu-fall-38p/">JTR 38P</a><a href="../jangsu-fall-40j/">JTR 40J</a><a href="../jangsu-fall-100/">JTR 100</a></div><details><summary>Other courses</summary><div class="course-list"><span>Other Jangsu Trail Race Fall courses</span><a href="../jangsu-fall-miler/">JTR Miler</a><a href="../jangsu-fall-20/">JTR 20</a><a href="../jangsu-fall-38p/">JTR 38P</a><a href="../jangsu-fall-40j/">JTR 40J</a><a href="../jangsu-fall-100/">JTR 100</a></div></details></nav></div></header><main id="fit" class="page-wrap companion"><h1 class="page-title">Jangsu Fall Miler Relay</h1><p>168.6 km · 10,760 m of climb · Jangsu Stadium · <time datetime="2026-09-18T14:00:00+09:00">18 September 2026 at 14:00 local time</time></p><p>Four runners share the Jangsu Miler course, with seven designated exchange points and a total time limit of 46 hours 30 minutes.</p><p>Teams follow the same route as the solo race. <a href="../jangsu-fall-miler/">See the Miler map and elevation profile</a>.</p><h2>Exchange points</h2><p>Teams can change runners only at these checkpoints. Each runner must complete at least one official leg.</p><table class="relay-table"><thead><tr><th scope="col">Point</th><th scope="col">Location</th><th scope="col">Distance</th></tr></thead><tbody><tr><td>RX 1</td><td>Subun Village</td><td>26.1 km</td></tr><tr><td>RX 2</td><td>Donghwa Branch School</td><td>44.8 km</td></tr><tr><td>RX 3</td><td>Jangsu Mountain Tourism Center</td><td>69.6 km</td></tr><tr><td>RX 4</td><td>Yuksimnyeong Rest Area</td><td>81.8 km</td></tr><tr><td>RX 5</td><td>To-okdong Valley</td><td>97.3 km</td></tr><tr><td>RX 6</td><td>Forest Leisure Sports Center</td><td>130.2 km</td></tr><tr><td>RX 7</td><td>Jangsu Mountain Tourism Center</td><td>148.2 km</td></tr></tbody></table><h2>2026 results</h2><p>The organiser ranked all four-person teams together. <a href="https://utmb.world/utmb-index/races/65412.jangsutrailracefallwiththenorthfacejtrmilerrelay.2026">View the relay results</a>.</p><p><a href="https://rocknrun.kr/JTRMiler">Organiser’s relay rules and cutoffs</a> · <a href="../">Race calendar</a></p></main><script>
+(() => {
+  const nav = document.querySelector('.course-nav');
+  if (!nav) return;
+  const links = nav.querySelector('.course-inline');
+  const menu = nav.querySelector('details');
+
+  function fitCourses() {
+    const rows = new Set(Array.from(links.children, item => item.offsetTop));
+    const width = links.clientWidth;
+    const fits = width > 0 && rows.size <= 2 && links.scrollWidth <= width;
+    nav.classList.toggle('courses-fit', fits);
+    if (fits) menu.open = false;
+  }
+
+  fitCourses();
+  const observer = new ResizeObserver(fitCourses);
+  observer.observe(nav);
+  observer.observe(links);
+})();
+</script></body></html>
